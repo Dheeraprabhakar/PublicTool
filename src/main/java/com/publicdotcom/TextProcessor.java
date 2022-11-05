@@ -10,26 +10,26 @@ import java.util.*;
  * and outputs the result on the console
  */
 public class TextProcessor {
-    public static int pageLineWidth = 75;
+    //assumed maximum average page width
+    public static int PAGE_LINE_WIDTH = 75;
+    public static String SPACE = " ";
 
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
 
-        //scan input text
         System.out.println("Enter the input text:");
 
         //validate input text
-
         String input = validateStringInput(sc);
 
         //find the length of the longest string, this is to make sure the width is no less than longest string length
-        String[] splitStrings = input.split(" ");
+        String[] splitStrings = input.split(SPACE);
         int largestStr = Integer.MIN_VALUE;
         for (String s : splitStrings) {
             largestStr = Math.max(largestStr, s.length());
         }
 
-        System.out.println("Enter a number between " + largestStr + " (length of the longest word in the input) and " + pageLineWidth);
+        System.out.println("Enter a number between " + largestStr + " (length of the longest word in the input) and " + PAGE_LINE_WIDTH);
 
         //scan and validate width of text
         int width = validateIntInput(sc, "width", input, largestStr);
@@ -94,12 +94,12 @@ public class TextProcessor {
             case "width":
                 do {
                     while (!sc.hasNextInt()) {
-                        System.out.println("Enter a number between " + longestStrLen + " (length of the longest word in the input) and " + pageLineWidth);
+                        System.out.println("Enter a number between " + longestStrLen + " (length of the longest word in the input) and " + PAGE_LINE_WIDTH);
                         sc.next();
                     }
                     res = sc.nextInt();
                     if (res < longestStrLen || res > 75)
-                        System.out.println("Enter a number between " + longestStrLen + " (length of the longest word in the input) and " + pageLineWidth);
+                        System.out.println("Enter a number between " + longestStrLen + " (length of the longest word in the input) and " + PAGE_LINE_WIDTH);
 
                 } while (res < longestStrLen || res > 75);
                 break;
@@ -215,7 +215,7 @@ class CustomFormatter extends Format {
             return list;
         while (str.length() > 0) {
             //split words in the text
-            String[] splitStrings = str.split(" ");
+            String[] splitStrings = str.split(TextProcessor.SPACE);
             StringBuffer strBuffer = new StringBuffer();
             int linewidth = width;
             for (String subs : splitStrings) {
@@ -225,7 +225,7 @@ class CustomFormatter extends Format {
                 linewidth = linewidth - subs.length();
                 if (linewidth >= 0) {
                     //add spaces between words
-                    strBuffer.append(subs).append(" ");
+                    strBuffer.append(subs).append(TextProcessor.SPACE);
                     linewidth--;
                 } else {
                     break;
