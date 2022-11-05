@@ -1,12 +1,12 @@
 # PublicTool
-Text formatting tool
+Text formatting tool for Publicdotcom
 
 ## Pre-requisites
 
 - [Maven](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html)
 - [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-## Build and execute:
+## Build and Execute:
 
 1. Clone the git repo on your laptop, navigate to "PublicTool" project folder
 
@@ -18,7 +18,7 @@ Text formatting tool
 4. Run the executable using the below command
 >>`java -cp target/PublicTool-1.0-SNAPSHOT.jar com.publicdotcom.TextProcessor`
 
-## Implementation details and assumption:
+## Implementation and Assumptions:
 
 1. I've implemented the following formatting styles:
       - left
@@ -37,5 +37,5 @@ Text formatting tool
     The length of the longest word is 9 characters. My code will only accept width value > 9.
 
 ## Roadmap
-1. Implement 'full' formatting style. I understand that implementing `full` style needs a different way of parsing words and padding spaces, which I could not implement in the interest of time.
+1. Implement `full` formatting style. I understand that implementing this style needs a new way of parsing text and padding spaces, which the current implementation wouldn't support.
 2. Add unit tests
