@@ -10,10 +10,15 @@ public class TextProcessor {
     public static int pageLineWidth = 75;
     public static void main(String args[]){
         Scanner sc=new Scanner(System.in);
+
+        //scan input text
         System.out.println("Enter the input text:");
+
+        //validate input text
 
         String input = validateStringInput(sc);
 
+        //find the length of the longest string, this is to make sure the width is no less than longest string length
         String[] splitStrings = input.split(" ");
         int largestStr = Integer.MIN_VALUE;
         for(String s: splitStrings){
@@ -22,20 +27,22 @@ public class TextProcessor {
 
         System.out.println("Enter a number between "+largestStr  + " (length of the longest word in the input) and "+pageLineWidth);
 
+        //scan and validate width of text
         int width = validateIntInput(sc,"width", input, largestStr);
 
         System.out.println("Enter the alignment from below \n1. CENTER \n2. LEFT \n3. RIGHT \n4. HARD");
 
+        //scan and validate alignment
         int alignment = validateIntInput(sc,"alignment", input, largestStr);
 
-
+        //create a custom formatter that applies the width and alignment options on the input
         CustomFormatter util = new CustomFormatter(width, alignment);
-        System.out.println("You've chosen " + util.align+" alignment");
         try {
+            //print the formatted response on the standard out
             System.out.println(util.format(input, new StringBuffer(), null));
         } catch(Exception e){
             System.out.println(e.getMessage());
-            System.out.println("Try again with a different input");
+            System.out.println("Re-run the program with a different input.");
         }
     }
 
@@ -109,37 +116,35 @@ class CustomFormatter extends Format {
     @Override
     public StringBuffer format(Object input, StringBuffer buffer, FieldPosition pos) {
         String s = input.toString();
-        List<String> strings = null;
-
+        List<String> strings;
         try {
+            //process the input text to construct list of lines based on width and alignment type
             strings = splitInputStrings(s, align);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        Iterator<String> itr = strings.iterator();
-
-        while (itr.hasNext()) {
-            String currWord = itr.next();
-
+        Iterator<String> textIterator = strings.iterator();
+        while (textIterator.hasNext()) {
+            String currWord = textIterator.next();
             switch (align) {
                 case RIGHT:
-                    padSpaces(buffer, width - currWord.length());
+                    //append spaces at the beginning of each line
+                    appendSpaces(buffer, width - currWord.length());
                     buffer.append(currWord);
                     break;
-
                 case CENTER:
-                    int toAdd = width - currWord.length();
-                    padSpaces(buffer, toAdd / 2);
+                    int numberOfSpaces = width - currWord.length();
+                    //pad half the spaces before the first word
+                    appendSpaces(buffer, numberOfSpaces / 2);
                     buffer.append(currWord);
-                    padSpaces(buffer, toAdd - toAdd / 2);
+                    //append half the spaces after the last word
+                    appendSpaces(buffer, numberOfSpaces - numberOfSpaces / 2);
                     break;
-
                 case LEFT:
-
                 case HARD:
                     buffer.append(currWord);
-                    padSpaces(buffer, width - currWord.length());
+                    //append spaces at the end of each line
+                    appendSpaces(buffer, width - currWord.length());
                     break;
             }
             buffer.append("\n");
@@ -147,7 +152,12 @@ class CustomFormatter extends Format {
         return buffer;
     }
 
-    protected final void padSpaces(StringBuffer buffer, int numberOfSpaces) {
+    /**
+     * append a string of spaces to the string
+     * @param buffer
+     * @param numberOfSpaces
+     */
+    protected final void appendSpaces(StringBuffer buffer, int numberOfSpaces) {
         for (int i = 0; i < numberOfSpaces; i++) {
             buffer.append(' ');
         }
@@ -162,14 +172,21 @@ class CustomFormatter extends Format {
         return source;
     }
 
-    private List<String> splitInputStrings(String str) throws Exception {
-
+    /**
+     *  split input text into list of lines based on specified width based on the following constraint:
+     *  words are not split if the remaining line width is smaller than the word width.
+     * @param str input non empty text
+     * @return list of lines
+     * @throws Exception
+     */
+    private List<String> getNonHardAlignmentLines(String str) throws Exception {
         List<String> list = new ArrayList<String>();
         if (str == null)
             return list;
-        while ( str.length()>0) {
+        while (str.length()>0) {
+            //split words in the text
             String[] splitStrings = str.split(" ");
-            StringBuffer s = new StringBuffer();
+            StringBuffer strBuffer = new StringBuffer();
             int linewidth = width;
             for(String subs: splitStrings){
                 if(subs.length()>width){
@@ -177,29 +194,44 @@ class CustomFormatter extends Format {
                 }
                 linewidth = linewidth-subs.length();
                 if(linewidth>=0) {
-                    s.append(subs).append(" ");
+                    //add spaces between words
+                    strBuffer.append(subs).append(" ");
                     linewidth--;
                 } else{
                     break;
                 }
             }
-            String line = s.substring(0,s.length()-1).toString();
+            //remove the trailing space before adding line to the list
+            String line = strBuffer.substring(0,strBuffer.length()-1);
             list.add(line);
+            //remove leading and trailing spaces in the constructed string
             str = str.substring(line.length()).trim();
         }
         return list;
     }
+
+    /**
+     * method splits input text into a list of lines based on
+     * HARD alignment type or not
+     * @param str the input text
+     * @param align alignment enum type
+     * @return
+     * @throws Exception
+     */
     private List<String> splitInputStrings(String str,  Alignment align) throws Exception {
         List<String> list = new ArrayList<String>();
         if(align!=Alignment.HARD) {
-            list = splitInputStrings(str);
+            // if alignment type not HARD, construct each line such that
+            // words are not split if the remaining line width is smaller than the word width.
+            list = getNonHardAlignmentLines(str);
         } else {
-            if (str == null)
+            //if alignment type is HARD, words will be cut when line exceeds the specified width
+            if (str == null) {
                 return list;
-            for (int i = 0; i < str.length(); i = i + width)
-            {
-                int endindex = Math.min(i + width, str.length());
-                list.add(str.substring(i, endindex));
+            }
+            for (int i = 0; i < str.length(); i = i + width) {
+                int index = Math.min(i + width, str.length());
+                list.add(str.substring(i, index));
             }
         }
         return list;
