@@ -43,6 +43,9 @@ public class TextProcessor {
         CustomFormatter util = new CustomFormatter(width, alignment);
         try {
             //print the formatted response on the standard out
+            System.out.println("----------------------------------------------");
+            System.out.println("---------------------OUTPUT-------------------");
+            System.out.println("----------------------------------------------");
             System.out.println(util.format(input, new StringBuffer(), null));
         } catch (Exception e) {
             System.out.println(e.getMessage());
