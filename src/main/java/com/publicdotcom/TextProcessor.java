@@ -18,7 +18,7 @@ public class TextProcessor {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("----------------------------------------------");
-        System.out.println("--------------Enter the input text------------");
+        System.out.println("--------Enter single line input text----------");
         System.out.println("----------------------------------------------");
 
         //validate input text
