@@ -34,7 +34,7 @@ public class TextProcessor {
         //scan and validate width of text
         int width = validateIntInput(sc, "width", input, largestStr);
 
-        System.out.println("Enter the alignment from below \n1. CENTER \n2. LEFT \n3. RIGHT \n4. HARD");
+        System.out.println("Enter a number between 1 and 4 for the below formatting: \n1. CENTER \n2. LEFT \n3. RIGHT \n4. HARD");
 
         //scan and validate alignment
         int alignment = validateIntInput(sc, "alignment", input, largestStr);
