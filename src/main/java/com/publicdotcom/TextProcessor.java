@@ -5,6 +5,10 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.*;
 
+/**
+ * text processor accepts inputs from standard input, validates them
+ * and outputs the result on the console
+ */
 public class TextProcessor {
     public static int pageLineWidth = 75;
 
