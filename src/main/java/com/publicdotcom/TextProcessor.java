@@ -17,7 +17,9 @@ public class TextProcessor {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Enter the input text:");
+        System.out.println("----------------------------------------------");
+        System.out.println("--------------Enter the input text------------");
+        System.out.println("----------------------------------------------");
 
         //validate input text
         String input = validateStringInput(sc);
@@ -28,12 +30,12 @@ public class TextProcessor {
         for (String s : splitStrings) {
             largestStr = Math.max(largestStr, s.length());
         }
-
-        System.out.println("Enter a number between " + largestStr + " (length of the longest word in the input) and " + PAGE_LINE_WIDTH);
+        System.out.println("----------------------------------------------");
+        System.out.println("Enter a number between " + largestStr + " and " + PAGE_LINE_WIDTH+" ("+largestStr+" being the length of the longest word in the input)");
 
         //scan and validate width of text
         int width = validateIntInput(sc, "width", input, largestStr);
-
+        System.out.println("--------------------------------------------------------");
         System.out.println("Enter a number between 1 and 4 for the below formatting: \n1. CENTER \n2. LEFT \n3. RIGHT \n4. HARD");
 
         //scan and validate alignment
