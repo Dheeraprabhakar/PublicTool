@@ -50,6 +50,12 @@ public class TextProcessor {
         }
     }
 
+    /**
+     * accepts text input from standard input, makes sure its valid
+     * rejects empty values or large text > Integer.MAX_VALUE words
+     * @param sc
+     * @return
+     */
     private static String validateStringInput(Scanner sc) {
         String res = "";
         do {
@@ -61,13 +67,19 @@ public class TextProcessor {
         return res;
     }
 
+    /**
+     *  accepts integer input from standard input, makes sure its valid
+     * @param sc
+     * @param option
+     * @param input
+     * @param longestStrLen
+     * @return
+     */
     private static int validateIntInput(Scanner sc, String option, String input, int longestStrLen) {
         int res = 0;
         switch (option) {
             case "alignment":
-                //result = sc.nextInt();
                 do {
-                    //System.out.println("Enter a number from below \n1. CENTER \n2. LEFT \n3. RIGHT \n4. HARD");
                     while (!sc.hasNextInt()) {
                         System.out.println("Please select a valid option from below \n1. CENTER \n2. LEFT \n3. RIGHT \n4. HARD");
                         sc.next(); //keep reading input until
